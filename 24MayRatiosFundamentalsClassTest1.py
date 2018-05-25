@@ -8,7 +8,9 @@ import collections
 import datetime
 import alpha_vantage
 import numpy as np
-
+from alpha_vantage.timeseries import TimeSeries
+import datetime as dt
+import matplotlib.pyplot as plt
 
 ###global constants
 
@@ -27,17 +29,46 @@ class CompanyEvaluation:
         return ticker
         
 
+    def roundTime(dt=None, roundTo=60): #From Thierry Husson 2012
+       if dt == None : dt = datetime.datetime.now()
+       seconds = (dt.replace(tzinfo=None) - dt.min).seconds
+       rounding = (seconds+roundTo/2) // roundTo * roundTo
+       return dt + datetime.timedelta(0,rounding-seconds,-dt.microsecond)
+       #print (roundTime(datetime.datetime(2012,12,31,23,44,59,1234),roundTo=15*60))
+
+
     def stockprices(self):
         #relates to what the actual prices are doing relative to self and others
+        AVkey="E82V6HPLXDMUN5TM"
+        totaltickers=["OPK", "DGX", "NVTA", "LH"]
+        ts=TimeSeries(key=AVkey, output_format='pandas')
+        start=dt.datetime.today()-dt.timedelta(days=100)
+        print(roundTime(start))
+        end=dt.datetime.today()
+        tickerdic={}
+        #will be useful to have plt tutorial to address axes, labeling, legends again
+        #combined chart, individual chart, multiple timescales, (daily/weekly/monthly)
+        #incorporate something in to account for value error
+        #incorporate the filter for whether or not generate stock data
+        #incorporate aspects to plot by days
+        for ticker in totaltickers: 
+            data, meta_data=ts.get_daily_adjusted(ticker)
+            tickerdic[ticker]=data
+            #data2, meta_data2=ts.get_intraday(ticker)
+            #print(data)
+            tickerdic[ticker]["5. adjusted close"].plot()
+            plt.xlabel("Time")
+            plt.ylabel("Stock Price ($)")
+            plt.axis([start, end, 0, 200])
+        print(len(tickerdic["DGX"]))
+        plt.title("Testgraph of tickers")
+        plt.show()
+        return "cheese"
+        
         pass
     
     def fundamentalratios(self):
         totaltickers=["OPK", "MYGN", "DGX", "NVTA"]
-        goodbaddiclist=[{"Cash Ratio": "High is Good"}, {"Current Ratio":"High is Good"}]
-        df2=pd.DataFrame.from_dict(goodbaddiclist, orient="columns")
-        print(df2)
-        check=goodbaddiclist
-        print(check)
         valuationlist=["P/E Current", "P/E Ratio (with extraordinary items)", "P/E Ratio (without extraordinary items)", "Price to Sales Ratio", "Price to Book Ratio", "Price to Cash Flow Ratio", "Enterprise Value to EBITDA", "Total Debt to Enterprise Value"]#low better except enterprise value to sales where high better (excluded from this list)
         efficiencylist=["Revenue/Employee", "Income Per Employee", "Receivables Turnover", "Total Asset Turnover"] #high is good
         liquiditylist=["Cash Ratio", "Current Ratio", "Quick Ratio"]#high is good
@@ -52,58 +83,39 @@ class CompanyEvaluation:
         #dowehaveapickle=os.path.isfile(picklefilename)
         #print(os.path.abspath(picklefilename))
         tickerlabelratiodict=collections.OrderedDict()
-        #numberasindexdict={}
         for ticker in totaltickers:
             americaurl="https://www.marketwatch.com/investing/stock/" + ticker + "/profile" #creates the url template for usa stock ticker designation
             resp=requests.get(americaurl) # requests the info on americaurl and sends it to response variable
             soup3=bs.BeautifulSoup(resp.text, "lxml")# turns the resp variable into a soup
             fundamentalratiolabels=[e.get_text() for e in soup3.select(".sixwide .column")] #soup perused and labels and ratios extracted and fed into vbls based upon html characteristics
-            
             fundamentalratios=[e.get_text() for e in soup3.select(".sixwide .data")]
             new_dict=collections.OrderedDict({k:v for k, v in zip(fundamentalratiolabels, fundamentalratios)}) #the selected labels and selected ratios combined togteher into dictionary
             tickerlabelratiodict[ticker.upper()]=new_dict #label:ratio dictionary as values into another dictionary where stock ticker for each group is the key
-            
             #df=pd.DataFrame(tickerlabelratiodict, columns=tickerlabelratiodict)
             df=pd.DataFrame.from_dict(tickerlabelratiodict, orient="columns")# dictionary turned into a pandas dataframe            
             #print(df[0:7][ticker.upper()]["Cash Ratio"])
             df = df.reset_index()
             df.reset_index(drop=True)
             df["Company Ratios"]=df["index"]
-            
-            #print(df[:2])
-            #df["Potential OPOE Treatment"]=df[0:]
-            #del df["index"]
-            #del df[0]
             df.index = np.arange(1, len(df) + 1)
-            #print(fundamentalratiolabels)
             #with open(filename+".pickle", "wb") as f:
                 #pickle.dump(df, f)
                 #f.close()
-        #df.to_csv("24MayTest5"+".csv")
-        #print(tickerlabelratiodict)
-        #return df.head()
         goodbadlist=[]
         for item in df["Company Ratios"]:
             if item in totallist:
                 goodbadlist.append("High ~ Better")
             else:
                 goodbadlist.append("Low ~ Better")
-        print (goodbadlist)
         df["Opinions"]=goodbadlist
-
-
-
-
-
-
-
-                #df.loc[:,"Opinion"]=goodbaddiclist
-            #else:
-                #df.loc[:,"Opinion"]
-        df.to_csv("25MayTest.csv")
+        #df.to_csv("25MayTest.csv")
         return df
+    
+    def SentimentAnalysis(self):
+        pass
+        
 #pasta=CompanyEvaluation()
-print(CompanyEvaluation().fundamentalratios())
+print(CompanyEvaluation().stockprices())
 
 
         
