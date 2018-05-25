@@ -32,13 +32,20 @@ class CompanyEvaluation:
         pass
     
     def fundamentalratios(self):
-        totaltickers=["OPK", "MYGN", "MSFT", "DGX", "NVTA"]
+        totaltickers=["OPK", "MYGN", "DGX", "NVTA"]
         goodbaddiclist=[{"Cash Ratio": "High is Good"}, {"Current Ratio":"High is Good"}]
         df2=pd.DataFrame.from_dict(goodbaddiclist, orient="columns")
         print(df2)
         check=goodbaddiclist
         print(check)
-        highgoodlist=["Cash Ratio", "Current Ratio", "Cash Ratio"]
+        valuationlist=["P/E Current", "P/E Ratio (with extraordinary items)", "P/E Ratio (without extraordinary items)", "Price to Sales Ratio", "Price to Book Ratio", "Price to Cash Flow Ratio", "Enterprise Value to EBITDA", "Total Debt to Enterprise Value"]#low better except enterprise value to sales where high better (excluded from this list)
+        efficiencylist=["Revenue/Employee", "Income Per Employee", "Receivables Turnover", "Total Asset Turnover"] #high is good
+        liquiditylist=["Cash Ratio", "Current Ratio", "Quick Ratio"]#high is good
+        profitabilitylist=["Gross Margin", "Operating Margin", "Pretax Margin", "Net Margin", "Return on Assets", "Return on Equity", "Return on Total Capital", "Return on Invested Capital"] #high is better
+        capitalstructurelist=["Total Debt to Total Equity", "Total Debt to Total Capital", "Total Debt to Total Assets", "Long-Term Debt to Equity", "Long-Term Debt to Total Capital"]#low is better
+        additionalmetricslist=["Revenue (millions USD)", "Net Income (millions USD)", "Sales Growth (most recent)(%)", "Employees", "Market Cap (million)"]#high is better
+        totallist=["Revenue/Employee", "Income Per Employee", "Receivables Turnover", "Total Asset Turnover", "Cash Ratio", "Current Ratio", "Quick Ratio",  "Gross Margin", "Operating Margin", "Pretax Margin", "Net Margin", "Return on Assets", "Return on Equity", "Return on Total Capital", "Return on Invested Capital", "Revenue (millions USD)", "Net Income (millions USD)", "Sales Growth (most recent)(%)", "Enterprise Value to Sales"]#excludes capital structure and majority of valuation
+        print(totallist)
         #filename="24MayTest"
         #picklefilename=filename+".pickle"
         totaltickers=[ticker.replace(ticker, ticker.lower()) for ticker in totaltickers]
@@ -75,16 +82,25 @@ class CompanyEvaluation:
         #df.to_csv("24MayTest5"+".csv")
         #print(tickerlabelratiodict)
         #return df.head()
-        pussylist=[]
+        goodbadlist=[]
         for item in df["Company Ratios"]:
-            if item in highgoodlist:
-                pussylist.append("high is good")
+            if item in totallist:
+                goodbadlist.append("High ~ Better")
             else:
-                pussylist.append("bullshit")
-        df["Opinions"]=pussylist
+                goodbadlist.append("Low ~ Better")
+        print (goodbadlist)
+        df["Opinions"]=goodbadlist
+
+
+
+
+
+
+
                 #df.loc[:,"Opinion"]=goodbaddiclist
             #else:
                 #df.loc[:,"Opinion"]
+        df.to_csv("25MayTest.csv")
         return df
 #pasta=CompanyEvaluation()
 print(CompanyEvaluation().fundamentalratios())
