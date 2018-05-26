@@ -37,13 +37,13 @@ class CompanyEvaluation:
        #print (roundTime(datetime.datetime(2012,12,31,23,44,59,1234),roundTo=15*60))
 
 
-    def stockprices(self):
+    def stockchart(self):
         #relates to what the actual prices are doing relative to self and others
         AVkey="E82V6HPLXDMUN5TM"
         totaltickers=["OPK", "DGX", "NVTA", "LH"]
         ts=TimeSeries(key=AVkey, output_format='pandas')
         start=dt.datetime.today()-dt.timedelta(days=100)
-        print(roundTime(start))
+        #print(roundTime(start))
         end=dt.datetime.today()
         tickerdic={}
         #will be useful to have plt tutorial to address axes, labeling, legends again
@@ -55,13 +55,16 @@ class CompanyEvaluation:
             data, meta_data=ts.get_daily_adjusted(ticker)
             tickerdic[ticker]=data
             #data2, meta_data2=ts.get_intraday(ticker)
-            #print(data)
-            tickerdic[ticker]["5. adjusted close"].plot()
-            plt.xlabel("Time")
+            #plt.legend(meta_data["2. Symbol"])
+            tickerdic[ticker]["5. adjusted close"].plot(label=ticker)
+            plt.xlabel("100 Day Moving Average")
             plt.ylabel("Stock Price ($)")
-            plt.axis([start, end, 0, 200])
+            #plt.axis([start, end, 0, 200])
+            #print(meta_data["2. Symbol"])
+            plt.legend(loc="upper right")
         print(len(tickerdic["DGX"]))
         plt.title("Testgraph of tickers")
+        
         plt.show()
         return "cheese"
         
@@ -115,7 +118,7 @@ class CompanyEvaluation:
         pass
         
 #pasta=CompanyEvaluation()
-print(CompanyEvaluation().stockprices())
+print(CompanyEvaluation().stockchart())
 
 
         
