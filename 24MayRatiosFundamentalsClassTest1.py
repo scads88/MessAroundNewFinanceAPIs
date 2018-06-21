@@ -16,6 +16,9 @@ import matplotlib.pyplot as plt
 
 
 
+#might wanna generate all of these for one instance and leave the looping for later?
+
+
 ###Company Evaluation Class
 class CompanyEvaluation:
     pass
@@ -24,9 +27,78 @@ class CompanyEvaluation:
     def __init__(self):
         pass
     
-    def rawfundamentals(self, ticker):
-        self.ticker=ticker
-        return ticker
+    
+    def infotrigger1(self):
+        pass
+    
+    def rawfundamentals(self):
+        gonogo="pass"
+        AVkey="E82V6HPLXDMUN5TM"
+        tickerbox=["OPK", "DGX", "NVTA", "LH"]
+
+        for i in tickerbox:
+            resp=requests.get("https://www.marketwatch.com/investing/stock/"+tickername+"/financials")
+            soup=bs.BeautifulSoup(resp.text, "lxml")
+            table = soup.find_all("td", class_="rowTitle")
+            rows=list()
+            for row in table:
+                labels=[e.get_text().strip() for e in soup.select(".rowTitle")]
+                values=[e.get_text().strip() for e in soup.select(".valueCell")]
+####these are sensitive be care if fuck with them####
+            labels.pop(0)
+            labels.pop(11)
+#######################################################
+            fucktable=list(sorted(set([e.get_text().strip() for e in soup.select("th")]))) #generates list with years, etc, redundancy; kills redundant; organizes; turns into list; forces to vbl, gets rid blank
+            fucktable.pop(0)
+            theyears=fucktable[:5]
+
+            values2013=values[::5]
+            values2014=values[1::5]
+            values2015=values[2::5]
+            values2016=values[3::5]
+            values2017=values[4::5]
+
+            labelsvalueslast5years=[]
+
+            print(values2016)
+            labelsvalues2013dict={}
+            for label, value in zip(labels, values2013):
+                labelsvalues2013dict[label]=value
+                labelsvalueslast5years.append(labelsvalues2013dict)
+            labelsvalues2014dict={}
+            for label, value in zip(labels, values2014):
+                labelsvalues2014dict[label]=value
+                labelsvalueslast5years.append(labelsvalues2014dict)
+            labelsvalues2015dict={}
+            for label, value in zip(labels, values2015):
+                labelsvalues2015dict[label]=value
+                labelsvalueslast5years.append(labelsvalues2015dict)
+            labelsvalues2016dict={}
+            for label, value in zip(labels, values2016):
+                labelsvalues2016dict[label]=value
+                labelsvalueslast5years.append(labelsvalues2016dict)
+            labelsvalues2017dict={}
+            for label, value in zip(labels, values2017):
+                labelsvalues2017dict[label]=value
+                labelsvalueslast5years.append(labelsvalues2017dict)
+
+            years2labelsvaluesdict={}
+
+            years2labelsvaluesdict[theyears[0]]=labelsvalues2013dict
+            years2labelsvaluesdict[theyears[1]]=labelsvalues2014dict
+            years2labelsvaluesdict[theyears[2]]=labelsvalues2015dict
+            years2labelsvaluesdict[theyears[3]]=labelsvalues2016dict
+            years2labelsvaluesdict[theyears[4]]=labelsvalues2017dict
+
+#######################################
+            ticker2years2labelsvaluesdict={}
+            ticker2years2labelsvaluesdict[tickername]=years2labelsvaluesdict
+            years2labelsvaluesdict2=years2labelsvaluesdict.values()
+            dfx=pd.DataFrame.from_dict(years2labelsvaluesdict)# dictionary turned into a pandas dataframe
+        #could be a good place to start replacement loop
+            print (dfx["2013"].head())
+        #break
+            dfx.to_csv("smoke"+i+".csv")
         
 
     def roundTime(dt=None, roundTo=60): #From Thierry Husson 2012
@@ -111,14 +183,19 @@ class CompanyEvaluation:
             else:
                 goodbadlist.append("Low ~ Better")
         df["Opinions"]=goodbadlist
-        #df.to_csv("25MayTest.csv")
+        df.to_csv("28MayTest.csv")
         return df
     
     def SentimentAnalysis(self):
         pass
+    
+    def PredictiveAnalytics(self):
+        pass
         
 #pasta=CompanyEvaluation()
-print(CompanyEvaluation().stockchart())
+#print(CompanyEvaluation().fundamentalratios())
+#print(CompanyEvaluation().stockchart())
+print(CompanyEvaluation().rawfundamentals())
 
 
         
