@@ -195,7 +195,7 @@ class CompanyEvaluation:
 #pasta=CompanyEvaluation()
 #print(CompanyEvaluation().fundamentalratios())
 #print(CompanyEvaluation().stockchart())
-print(CompanyEvaluation().rawfundamentals())
+#print(CompanyEvaluation().rawfundamentals())
 
 
         
