@@ -36,7 +36,7 @@ class CompanyEvaluation:
         AVkey="E82V6HPLXDMUN5TM"
         tickerbox=["OPK", "DGX", "NVTA", "LH"]
 
-        for i in tickerbox:
+        for tickername in tickerbox:
             resp=requests.get("https://www.marketwatch.com/investing/stock/"+tickername+"/financials")
             soup=bs.BeautifulSoup(resp.text, "lxml")
             table = soup.find_all("td", class_="rowTitle")
@@ -98,7 +98,7 @@ class CompanyEvaluation:
         #could be a good place to start replacement loop
             print (dfx["2013"].head())
         #break
-            dfx.to_csv("smoke"+i+".csv")
+            dfx.to_csv("smoke"+tickername+".csv")
         
 
     def roundTime(dt=None, roundTo=60): #From Thierry Husson 2012
@@ -188,14 +188,16 @@ class CompanyEvaluation:
     
     def SentimentAnalysis(self):
         pass
+
+    
     
     def PredictiveAnalytics(self):
         pass
         
 #pasta=CompanyEvaluation()
-#print(CompanyEvaluation().fundamentalratios())
-#print(CompanyEvaluation().stockchart())
-#print(CompanyEvaluation().rawfundamentals())
+print(CompanyEvaluation().fundamentalratios())
+print(CompanyEvaluation().stockchart())
+print(CompanyEvaluation().rawfundamentals())
 
 
         

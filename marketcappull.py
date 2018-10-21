@@ -14,14 +14,17 @@ totaltickers=["AA", "AAPL", "MSFT"]
 for ticker in totaltickers:
     resp=requests.get("https://www.marketwatch.com/investing/stock/"+ticker)
     soup=bs.BeautifulSoup(resp.text, "lxml")
+    print(soup)
     table=soup.find_all("li", class_="kv__item") #looks for the li (list item feature, usually comes immediately before "class", and also the class_ characteristic (what class is equal to. helps to narrow down)
+    
     for row in table:
         labels=[e.get_text().strip() for e in soup.select(".kv__label")] #pulls the text from the class =kv_label 
         values=[e.get_text().strip() for e in soup.select(".kv__primary ")] #pulls the tex from the class= kv_value
         labels2valuesdic={k:v for k, v in zip( labels, values)} #dictionaries labels and values
         company2infodic[ticker]=labels2valuesdic #dictionaries the company ticker name with respective labels and values
 print(company2infodic)
-
+for i in totaltickers:
+    print("Market CAP", i , company2infodic[i]["Market Cap"])
 
 #jam this into the ratios data csv generated
 # modify the m's b's and curlyqs to intergers

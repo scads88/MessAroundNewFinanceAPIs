@@ -1,16 +1,16 @@
 ,index,OPK,MYGN,DGX,NVTA,Company Ratios,Opinions
 1,Cash Ratio,0.30,0.69,0.13,1.94,Cash Ratio,High ~ Better
 2,Current Ratio,1.14,1.46,1.24,2.60,Current Ratio,High ~ Better
-3,Enterprise Value to EBITDA,-15.05,20.44,12.13,-4.85,Enterprise Value to EBITDA,Low ~ Better
-4,Enterprise Value to Sales,2.46,3.47,2.45,6.14,Enterprise Value to Sales,High ~ Better
+3,Enterprise Value to EBITDA,-20.01,22.86,11.97,-4.94,Enterprise Value to EBITDA,Low ~ Better
+4,Enterprise Value to Sales,3.28,3.89,2.42,6.25,Enterprise Value to Sales,High ~ Better
 5,Gross Margin,33.98,77.81,38.47,23.86,Gross Margin,High ~ Better
 6,Income Per Employee,"-51,222.00","9,083.00","17,089.00","-207,710.00",Income Per Employee,High ~ Better
 7,Long-Term Debt to Equity,7.57,12.73,76.16,34.86,Long-Term Debt to Equity,Low ~ Better
 8,Long-Term Debt to Total Capital,6.98,11.30,42.71,25.53,Long-Term Debt to Total Capital,Low ~ Better
 9,Net Margin,-28.93,2.83,9.98,-180.85,Net Margin,High ~ Better
 10,Operating Margin,-25.31,10.89,16.64,-172.17,Operating Margin,High ~ Better
-11,P/E Current,-8.71,122.03,20.16,-3.09,P/E Current,Low ~ Better
-12,P/E Ratio (with extraordinary items),-8.24,20.56,19.68,-3.36,P/E Ratio (with extraordinary items),Low ~ Better
+11,P/E Current,-10.71,137.50,19.81,-3.12,P/E Current,Low ~ Better
+12,P/E Ratio (with extraordinary items),-10.13,23.17,18.72,-3.39,P/E Ratio (with extraordinary items),Low ~ Better
 13,P/E Ratio (without extraordinary items),,80.75,17.93,,P/E Ratio (without extraordinary items),Low ~ Better
 14,Pretax Margin,-25.81,5.56,13.36,-183.57,Pretax Margin,High ~ Better
 15,Price to Book Ratio,1.45,2.27,2.70,4.00,Price to Book Ratio,Low ~ Better
